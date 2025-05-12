@@ -9,16 +9,19 @@ import {
   Typography,
 } from "@mui/material";
 import MainStepper from "./components/MainStepper";
+import { useDispatch, useSelector } from "react-redux";
+import { setKycStatus } from "./store/Slices/kycSlice";
 
 const steps = ["Personal Info", "Address Info", "Terms & Conditions"];
 
 function App() {
+  const completedKyc = useSelector((state) => state.kyc.kycStatus);
+  const dispatch = useDispatch();
   const [activeStep, setActiveStep] = useState(0);
-  const [completed, setCompleted] = useState(false);
 
   const handleNext = () => {
     if (activeStep === steps.length - 1) {
-      setCompleted(true);
+      dispatch(setKycStatus(true));
     } else {
       setActiveStep((prev) => prev + 1);
     }
@@ -49,7 +52,7 @@ function App() {
           ))}
         </Stepper>
 
-        {!completed ? (
+        {!completedKyc ? (
           <MainStepper
             step={activeStep}
             onNext={handleNext}

@@ -16,7 +16,8 @@ const initialState = {
     state: '',
     country: '',
     zipCode: '',
-  }
+  },
+  kycStatus: false
 };
 
 const kycSlice = createSlice({
@@ -29,8 +30,11 @@ const kycSlice = createSlice({
     setAddressInfo: (state, { payload }) => {
         state.addressInfo = payload;
     },
+    setKycStatus: (state, { payload }) => {
+      state.kycStatus = payload;
+  },
   },
 });
 
-export const { setPersonalInfo, setAddressInfo } = kycSlice.actions;
+export const { setPersonalInfo, setAddressInfo, setKycStatus } = kycSlice.actions;
 export default kycSlice.reducer;

@@ -1,24 +1,67 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useState } from "react";
+import {
+  Box,
+  Paper,
+  Step,
+  StepLabel,
+  Stepper,
+  Typography,
+} from "@mui/material";
+import MainStepper from "./components/MainStepper";
+
+const steps = ["Personal Info", "Address Info", "Terms & Conditions"];
 
 function App() {
+  const [activeStep, setActiveStep] = useState(0);
+  const [completed, setCompleted] = useState(false);
+
+  const handleNext = () => {
+    if (activeStep === steps.length - 1) {
+      setCompleted(true);
+    } else {
+      setActiveStep((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    setActiveStep((prev) => prev - 1);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      height="100vh"
+      bgcolor="#f5f5f5"
+    >
+      <Paper elevation={3} sx={{ padding: 4, width: 500 }}>
+        <Typography variant="h5" gutterBottom>
+          KYC Process
+        </Typography>
+
+        <Stepper activeStep={activeStep} sx={{ marginBottom: 3 }}>
+          {steps.map((label, index) => (
+            <Step key={"step-" + index}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+
+        {!completed ? (
+          <MainStepper
+            step={activeStep}
+            onNext={handleNext}
+            onPrevious={handlePrevious}
+          />
+        ) : (
+          <Typography variant="h4" color="success.main" align="center">
+            ✅ KYC Completed Successfully!
+          </Typography>
+        )}
+      </Paper>
+    </Box>
   );
 }
 
